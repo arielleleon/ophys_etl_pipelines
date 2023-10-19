@@ -110,7 +110,13 @@ class Suite2PWrapperSchema(argschema.ArgSchema):
                     "of computing one internally. To use automated reference "
                     "image generation in ophys_etl, set this value to True and"
                     "refImg to an empty list or array (Default).")
-
+    denoise = argschema.fields.Bool(
+        default=True,
+        description=("whether or not to run denoising"))
+    # s2p cell detection settings
+    anatomical_only = argschema.fields.Int(
+        default=2,
+        description=("0: not anatomical; < 0 use mean image."))
     # s2p cell detection settings
     spikedetect = argschema.fields.Bool(
             default=False,
