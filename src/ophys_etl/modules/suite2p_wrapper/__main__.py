@@ -26,7 +26,8 @@ class Suite2PWrapper(argschema.ArgSchemaParser):
         # already specified in self.args
         self.args = {**copy.deepcopy(suite2p.default_ops()),
                      **self.args}
-
+        import pprint
+        pprint.pprint(self.args)
         # Should always exist as either a valid SHA or "unknown build"
         # if running in docker container.
         ophys_etl_commit_sha = os.environ.get("OPHYS_ETL_COMMIT_SHA",
