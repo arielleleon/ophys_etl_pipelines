@@ -163,8 +163,8 @@ class PostProcessROIs(ArgSchemaParser):
             output_fp="processing.json",
             url=url,
         )
-        # with open(self.args['output_json'], 'w') as f:
-        #     json.dump(compatible_rois, f, indent=2)
+        with open(self.args['output_json'], 'w') as f:
+            json.dump(compatible_rois, f, indent=2)
 
 
 if __name__ == '__main__':  # pragma: no cover
