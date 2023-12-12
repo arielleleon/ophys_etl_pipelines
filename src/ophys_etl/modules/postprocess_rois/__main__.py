@@ -3,6 +3,13 @@ import h5py
 import numpy as np
 from argschema import ArgSchemaParser
 from marshmallow import ValidationError
+import json
+from pathlib import Path
+from aind_data_schema import Processing
+from aind_data_schema.processing import DataProcess, ProcessName, PipelineProcess
+from typing import Union
+from datetime import datetime as dt
+from datetime import timezone as tz
 
 from ophys_etl.utils.motion_border import (
         get_max_correction_from_file,
@@ -16,6 +23,57 @@ from ophys_etl.modules.postprocess_rois.utils import filter_by_aspect_ratio
 from ophys_etl.modules.postprocess_rois.schemas import \
         PostProcessROIsInputSchema
 
+def write_output_metadata(
+    metadata: dict,
+    input_fp: Union[str, Path],
+    output_fp: Union[str, Path],
+    url: str,
+    start_date_time: dt,
+) -> None:
+    """Writes output metadata to plane processing.json
+
+    Parameters
+    ----------
+    metadata: dict
+        parameters from suite2p motion correction
+    input_fp: str
+        path to data input
+    output_fp: str
+        path to data output
+    url: str
+        url to code repository
+    """
+    processing = Processing(
+        processing_pipeline=PipelineProcess(
+            processor_full_name="Multplane Ophys Processing Pipeline",
+            pipeline_url="https://codeocean.allenneuraldynamics.org/capsule/5472403/tree",
+            pipeline_version="0.1.0",
+            data_processes=[
+                DataProcess(
+                    name=ProcessName.VIDEO_ROI_SEGMENTATION,
+                    software_version="0.1.0",
+                    start_date_time=start_date_time,  # TODO: Add actual dt
+                    end_date_time=dt.now(tz.utc),  # TODO: Add actual dt
+                    input_location=str(input_fp),
+                    output_location=str(output_fp),
+                    code_url=(url),
+                    parameters=metadata,
+                )
+            ],
+        )
+    )
+    print(f"Output filepath: {output_fp}")
+    with open(output_fp.parent.parent / "processing.json", "r") as f:
+        proc_data = json.load(f)
+    processing.write_standard_file(output_directory=Path(output_fp.parent.parent))
+    with open(output_fp.parent.parent / "processing.json", "r") as f:
+        dct_data = json.load(f)
+    proc_data["processing_pipeline"]["data_processes"].append(
+        dct_data["processing_pipeline"]["data_processes"][0]
+    )
+    with open(output_fp.parent.parent / "processing.json", "w") as f:
+        json.dump(proc_data, f, indent=4)
+
 
 class PostProcessROIs(ArgSchemaParser):
     default_schema = PostProcessROIsInputSchema
@@ -28,7 +86,7 @@ class PostProcessROIs(ArgSchemaParser):
         binarizes the masks and then changes the formatting before writing
         to a json output file.
         """
-
+        start_time = dt.now(tz.utc)
         self.logger.name = type(self).__name__
         self.logger.setLevel(self.args.pop('log_level'))
 
@@ -98,8 +156,15 @@ class PostProcessROIs(ArgSchemaParser):
         self.logger.info("Writing LIMs compatible ROIs to json file at "
                          f"{self.args['output_json']}")
 
-        with open(self.args['output_json'], 'w') as f:
-            json.dump(compatible_rois, f, indent=2)
+        url = "https://github.com/AllenNeuralDynamics/aind-ophys-segmentation-cellpose"
+        write_output_metadata(
+            metadata=compatible_rois,
+            input_fp=self.args['motion_corrected_video'],
+            output_fp="processing.json",
+            url=url,
+        )
+        # with open(self.args['output_json'], 'w') as f:
+        #     json.dump(compatible_rois, f, indent=2)
 
 
 if __name__ == '__main__':  # pragma: no cover
