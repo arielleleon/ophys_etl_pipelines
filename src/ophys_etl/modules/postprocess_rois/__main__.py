@@ -160,7 +160,7 @@ class PostProcessROIs(ArgSchemaParser):
         write_output_metadata(
             metadata=compatible_rois,
             input_fp=self.args['motion_corrected_video'],
-            output_fp="processing.json",
+            output_fp=self.args['output_json'],
             url=url,
         )
         with open(self.args['output_json'], 'w') as f:
