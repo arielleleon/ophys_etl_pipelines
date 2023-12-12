@@ -5,8 +5,7 @@ from argschema import ArgSchemaParser
 from marshmallow import ValidationError
 import json
 from pathlib import Path
-from aind_data_schema import Processing
-from aind_data_schema.processing import DataProcess, ProcessName, PipelineProcess
+from aind_data_schema.core.processing import Processing, DataProcess, ProcessName, PipelineProce
 from typing import Union
 from datetime import datetime as dt
 from datetime import timezone as tz
