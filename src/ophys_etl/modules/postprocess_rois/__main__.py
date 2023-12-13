@@ -65,7 +65,7 @@ def write_output_metadata(
     print(f"Output filepath: {output_fp}")
     with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
         proc_data = json.load(f)
-    processing.write_standard_file(output_directory=Path(output_fp.parent.parent))
+    processing.write_standard_file(output_directory=Path(output_fp).parent.parent)
     with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
         dct_data = json.load(f)
     proc_data["processing_pipeline"]["data_processes"].append(
