@@ -157,10 +157,11 @@ class PostProcessROIs(ArgSchemaParser):
 
         url = "https://github.com/AllenNeuralDynamics/aind-ophys-segmentation-cellpose"
         write_output_metadata(
-            metadata=compatible_rois,
-            input_fp=self.args['motion_corrected_video'],
-            output_fp=self.args['output_json'],
-            url=url,
+            compatible_rois,
+            self.args['motion_corrected_video'],
+            self.args['output_json'],
+            url,
+            start_time
         )
         with open(self.args['output_json'], 'w') as f:
             json.dump(compatible_rois, f, indent=2)
