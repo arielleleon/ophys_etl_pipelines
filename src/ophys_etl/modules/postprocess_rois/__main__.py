@@ -9,6 +9,7 @@ from aind_data_schema.core.processing import Processing, DataProcess, ProcessNam
 from typing import Union
 from datetime import datetime as dt
 from datetime import timezone as tz
+from pathlib import Path
 
 from ophys_etl.utils.motion_border import (
         get_max_correction_from_file,
@@ -62,15 +63,15 @@ def write_output_metadata(
         )
     )
     print(f"Output filepath: {output_fp}")
-    with open(output_fp.parent.parent / "processing.json", "r") as f:
+    with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
         proc_data = json.load(f)
     processing.write_standard_file(output_directory=Path(output_fp.parent.parent))
-    with open(output_fp.parent.parent / "processing.json", "r") as f:
+    with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
         dct_data = json.load(f)
     proc_data["processing_pipeline"]["data_processes"].append(
         dct_data["processing_pipeline"]["data_processes"][0]
     )
-    with open(output_fp.parent.parent / "processing.json", "w") as f:
+    with open(Path(output_fp).parent.parent / "processing.json", "w") as f:
         json.dump(proc_data, f, indent=4)
 
 
