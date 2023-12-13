@@ -157,7 +157,7 @@ class PostProcessROIs(ArgSchemaParser):
 
         url = "https://github.com/AllenNeuralDynamics/aind-ophys-segmentation-cellpose"
         write_output_metadata(
-            compatible_rois,
+            {'compatible_rois': compatible_rois},
             self.args['motion_corrected_video'],
             self.args['output_json'],
             url,
