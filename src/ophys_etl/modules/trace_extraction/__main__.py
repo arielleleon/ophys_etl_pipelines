@@ -7,7 +7,7 @@ from aind_data_schema.core.processing import ProcessName
 from datetime import datetime as dt
 from datetime import timezone as tz
 
-from ophys_etl.utils.processing_metadata import write_output_metadata
+from ophys_etl.utils.process_metadata import write_output_metadata
 
 class TraceExtraction(argschema.ArgSchemaParser):
     default_schema = TraceExtractionInputSchema
