@@ -30,6 +30,8 @@ def write_output_metadata(
         url: str
                 url to code repository
         """
+        with open(metadata['neuropil_masks_file'], "r") as f:
+                metadata = json.load(f)
         processing = Processing(
                 processing_pipeline=PipelineProcess(
                 processor_full_name="Multplane Ophys Processing Pipeline",
@@ -50,15 +52,15 @@ def write_output_metadata(
                 )
         )
         print(f"Output filepath: {output_fp}")
-        with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
+        with open(Path(output_fp).parent.parent.parent / "processing.json", "r") as f:
                 proc_data = json.load(f)
-        processing.write_standard_file(output_directory=Path(output_fp).parent.parent)
-        with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
+        processing.write_standard_file(output_directory=Path(output_fp).parent.parent.parent)
+        with open(Path(output_fp).parent.parent.parent / "processing.json", "r") as f:
                 dct_data = json.load(f)
         proc_data["processing_pipeline"]["data_processes"].append(
                 dct_data["processing_pipeline"]["data_processes"][0]
         )
-        with open(Path(output_fp).parent.parent / "processing.json", "w") as f:
+        with open(Path(output_fp).parent.parent.parent / "processing.json", "w") as f:
                 json.dump(proc_data, f, indent=4)
 
 class TraceExtraction(argschema.ArgSchemaParser):
@@ -66,6 +68,7 @@ class TraceExtraction(argschema.ArgSchemaParser):
     default_output_schema = TraceExtractionOutputSchema
 
     def run(self):
+        start_time = dt.now(tz.utc)
         self.logger.name = type(self).__name__
         output = extract_traces(
                 self.args['motion_corrected_stack'],
@@ -73,6 +76,13 @@ class TraceExtraction(argschema.ArgSchemaParser):
                 self.args['storage_directory'],
                 self.args['rois'])
         self.output(output, indent=2)
+        write_output_metadata(
+                metadata=output,
+                input_fp = output['neuropil_masks_file'],
+                output_fp = output['neuropil_masks_file'],
+                url = "https://github.com/AllenNeuralDynamics/aind-ophys-trace-extraction.git",
+                start_date_time = start_time
+        )
         
 
 if __name__ == '__main__':  # pragma: nocover
