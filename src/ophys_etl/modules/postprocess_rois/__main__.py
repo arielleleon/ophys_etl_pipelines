@@ -29,7 +29,6 @@ def write_output_metadata(
     metadata: dict,
     input_fp: Union[str, Path],
     output_fp: Union[str, Path],
-    url: str,
     start_date_time: dt,
 ) -> None:
     """Writes output metadata to plane processing.json
@@ -42,8 +41,6 @@ def write_output_metadata(
         path to data input
     output_fp: str
         path to data output
-    url: str
-        url to code repository
     """
     processing = Processing(
         processing_pipeline=PipelineProcess(
