@@ -9,6 +9,8 @@ from aind_data_schema.core.processing import Processing, DataProcess, ProcessNam
 from typing import Union
 from datetime import datetime as dt
 from datetime import timezone as tz
+import os
+
 
 def write_output_metadata(
         metadata: dict,
@@ -40,12 +42,12 @@ def write_output_metadata(
                 data_processes=[
                         DataProcess(
                         name=ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
-                        software_version="0.1.0",
+                        software_version=os.getenv("OPHYS_ETL_COMMIT_SHA"),
                         start_date_time=start_date_time,  # TODO: Add actual dt
                         end_date_time=dt.now(tz.utc),  # TODO: Add actual dt
                         input_location=str(input_fp),
                         output_location=str(output_fp),
-                        code_url=(url),
+                        code_url=(os.getenv("OPHYS_ETL_URL")),
                         parameters=metadata,
                         )
                 ],
@@ -80,7 +82,6 @@ class TraceExtraction(argschema.ArgSchemaParser):
                 metadata=output,
                 input_fp = output['neuropil_mask_file'],
                 output_fp = output['neuropil_mask_file'],
-                url = "https://github.com/AllenNeuralDynamics/aind-ophys-trace-extraction.git",
                 start_date_time = start_time
         )
         

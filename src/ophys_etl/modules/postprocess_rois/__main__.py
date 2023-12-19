@@ -10,6 +10,7 @@ from typing import Union
 from datetime import datetime as dt
 from datetime import timezone as tz
 from pathlib import Path
+import os
 
 from ophys_etl.utils.motion_border import (
         get_max_correction_from_file,
@@ -22,6 +23,7 @@ from ophys_etl.utils.rois import (binarize_roi_mask,
 from ophys_etl.modules.postprocess_rois.utils import filter_by_aspect_ratio
 from ophys_etl.modules.postprocess_rois.schemas import \
         PostProcessROIsInputSchema
+
 
 def write_output_metadata(
     metadata: dict,
@@ -51,12 +53,12 @@ def write_output_metadata(
             data_processes=[
                 DataProcess(
                     name=ProcessName.VIDEO_ROI_SEGMENTATION,
-                    software_version="0.1.0",
+                    software_version=os.getenv("OPHYS_ETL_COMMIT_SHA"),
                     start_date_time=start_date_time,  # TODO: Add actual dt
                     end_date_time=dt.now(tz.utc),  # TODO: Add actual dt
                     input_location=str(input_fp),
                     output_location=str(output_fp),
-                    code_url=(url),
+                    code_url=(os.getenv("OPHYS_ETL_URL")),
                     parameters=metadata,
                 )
             ],
@@ -161,7 +163,6 @@ class PostProcessROIs(ArgSchemaParser):
             {'compatible_rois': compatible_rois},
             self.args['motion_corrected_video'],
             self.args['output_json'],
-            url,
             start_time
         )
         with open(self.args['output_json'], 'w') as f:
