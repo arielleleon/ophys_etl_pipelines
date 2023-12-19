@@ -1,5 +1,5 @@
 from pathlib import Path
-from aind_data_schema.core.processing import Processing, DataProcess, ProcessName, PipelineProcess
+from aind_data_schema.core.processing import Processing, DataProcess, PipelineProcess
 from typing import Union
 from datetime import datetime as dt
 from datetime import timezone as tz
