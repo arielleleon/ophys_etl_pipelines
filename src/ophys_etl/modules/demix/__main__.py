@@ -164,7 +164,7 @@ class DemixJob(ArgSchemaParser):
 
         write_output_metadata(
             self.output(),
-            ProcessName.DEMIXING,
+            ProcessName.SPATIAL_TIMESERIES_DEMIXING,
             input_fp=movie_h5,
             output_fp=output_h5,
             start_date_time=start_time,

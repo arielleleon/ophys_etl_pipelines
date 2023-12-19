@@ -24,7 +24,7 @@ class TraceExtraction(argschema.ArgSchemaParser):
         self.output(output, indent=2)
         write_output_metadata(
                 output,
-                ProcessName.TRACE_EXTRACTION,
+                ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
                 input_fp = output['neuropil_mask_file'],
                 output_fp = output['neuropil_mask_file'],
                 start_date_time = start_time
