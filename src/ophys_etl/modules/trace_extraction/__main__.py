@@ -30,7 +30,7 @@ def write_output_metadata(
         url: str
                 url to code repository
         """
-        with open(metadata['neuropil_masks_file'], "r") as f:
+        with open(metadata['neuropil_mask_file'], "r") as f:
                 metadata = json.load(f)
         processing = Processing(
                 processing_pipeline=PipelineProcess(
@@ -78,8 +78,8 @@ class TraceExtraction(argschema.ArgSchemaParser):
         self.output(output, indent=2)
         write_output_metadata(
                 metadata=output,
-                input_fp = output['neuropil_masks_file'],
-                output_fp = output['neuropil_masks_file'],
+                input_fp = output['neuropil_mask_file'],
+                output_fp = output['neuropil_mask_file'],
                 url = "https://github.com/AllenNeuralDynamics/aind-ophys-trace-extraction.git",
                 start_date_time = start_time
         )
