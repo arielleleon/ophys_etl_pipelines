@@ -5,7 +5,11 @@ import shutil
 import h5py
 import numpy as np
 from argschema import ArgSchemaParser
+from aind_data_schema.core.processing import ProcessName
+from datetime import datetime as dt
+from datetime import timezone as tz
 
+from ophys_etl.utils.processing_metadata import write_output_metadata
 import ophys_etl.modules.demix.demixer as demixer
 from ophys_etl.modules.demix.schemas import (
     DemixJobOutputSchema,
@@ -78,6 +82,7 @@ class DemixJob(ArgSchemaParser):
 
     def run(self):
         logging.debug("reading input")
+        start_time = dt.now(tz.utc)
 
         (
             traces,
@@ -155,6 +160,14 @@ class DemixJob(ArgSchemaParser):
                 negative_transient_roi_ids=trace_ids[valid][nt_inds],
                 negative_baseline_roi_ids=trace_ids[valid][nb_inds],
             )
+        )
+
+        write_output_metadata(
+            self.output(),
+            ProcessName.DEMIXING,
+            input_fp=movie_h5,
+            output_fp=output_h5,
+            start_date_time=start_time,
         )
 
 
