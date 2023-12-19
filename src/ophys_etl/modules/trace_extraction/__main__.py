@@ -39,7 +39,7 @@ def write_output_metadata(
                 pipeline_version="0.1.0",
                 data_processes=[
                         DataProcess(
-                        name=ProcessName.VIDEO_ROI_SEGMENTATION,
+                        name=ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
                         software_version="0.1.0",
                         start_date_time=start_date_time,  # TODO: Add actual dt
                         end_date_time=dt.now(tz.utc),  # TODO: Add actual dt
