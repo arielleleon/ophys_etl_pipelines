@@ -103,7 +103,6 @@ class PostProcessROIs(ArgSchemaParser):
         self.logger.info("Writing LIMs compatible ROIs to json file at "
                          f"{self.args['output_json']}")
 
-        url = "https://github.com/AllenNeuralDynamics/aind-ophys-segmentation-cellpose"
         write_output_metadata(
             {'compatible_rois': compatible_rois},
             ProcessName.VIDEO_ROI_SEGMENTATION,
