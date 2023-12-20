@@ -154,16 +154,18 @@ class DemixJob(ArgSchemaParser):
                 np.string_
             )
             f.create_dataset("roi_names", data=roi_names)
-        data = dict(
+        self.output(
+            dict(
                 negative_transient_roi_ids=trace_ids[valid][nt_inds],
                 negative_baseline_roi_ids=trace_ids[valid][nb_inds],
             )
-        self.output(
-            data
         )
 
         write_output_metadata(
-            data,
+            dict(
+                negative_transient_roi_ids=trace_ids[valid][nt_inds].tolist(),
+                negative_baseline_roi_ids=trace_ids[valid][nb_inds].tolist(),
+            ),
             ProcessName.SPATIAL_TIMESERIES_DEMIXING,
             input_fp=movie_h5,
             output_fp=output_h5,
