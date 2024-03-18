@@ -104,6 +104,7 @@ class PostProcessROIs(ArgSchemaParser):
                          f"{self.args['output_json']}")
 
         write_output_metadata(
+            {},
             ProcessName.VIDEO_ROI_SEGMENTATION,
             self.args['motion_corrected_video'],
             self.args['output_json'],

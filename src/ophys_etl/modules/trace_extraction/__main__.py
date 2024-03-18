@@ -23,6 +23,7 @@ class TraceExtraction(argschema.ArgSchemaParser):
                 self.args['rois'])
         self.output(output, indent=2)
         write_output_metadata(
+                {},
                 ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
                 input_fp = output['neuropil_mask_file'],
                 output_fp = output['neuropil_mask_file'],
