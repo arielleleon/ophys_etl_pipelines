@@ -26,6 +26,8 @@ def write_output_metadata(
     output_fp: str
         path to data output
     """
+    if type(output_fp) == "str":
+        output_fp = Path(output_fp)
     processing = Processing(
         processing_pipeline=PipelineProcess(
             processor_full_name="Multplane Ophys Processing Pipeline",
