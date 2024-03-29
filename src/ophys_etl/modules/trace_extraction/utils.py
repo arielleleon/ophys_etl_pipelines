@@ -202,9 +202,6 @@ def extract_traces(
     motion_border: Dict,
     storage_directory: Union[str, Path],
     rois: List[Dict],
-    roi_file: str,
-    np_file: str,
-    np_mask_file: str
 ) -> Dict:
     """
     calculates neuropil masks for ROIs (LIMS format),
@@ -264,13 +261,13 @@ def extract_traces(
         motion_corrected_stack, roi_mask_list, border
     )
 
-    roi_file = Path(storage_directory) / f"{roi_file}.h5"
+    roi_file = Path(storage_directory) / f"roi_traces.h5"
     write_trace_file(roi_traces, roi_names, roi_file)
 
-    np_file = Path(storage_directory) / f"{np_file}.h5"
+    np_file = Path(storage_directory) / f"neuropil_traces.h5"
     write_trace_file(neuropil_traces, roi_names, np_file)
 
-    np_mask_file = Path(storage_directory) / f"{np_mask_file}.json"
+    np_mask_file = Path(storage_directory) / f"neuropil_masks.json"
     write_mask_file(neuropil_mask_list, roi_names, np_mask_file)
 
     return {

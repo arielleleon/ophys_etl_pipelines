@@ -38,9 +38,6 @@ class TraceExtractionInputSchema(ArgSchema):
         ExtractROISchema,
         many=True,
         description="specifications of individual regions of interest")
-    roi_file = String(required=True)
-    np_file = String(required=True)
-    np_mask_file = String(required=True)
     log_0 = InputFile(
         required=False,
         description=("path to motion correction output csv. "
