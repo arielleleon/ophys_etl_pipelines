@@ -219,12 +219,6 @@ def extract_traces(
         the output directory
     rois: dict
         List of ROIs in LIMS format
-    roi_file: str
-        roi_traces filename
-    np_file: str
-        neuropil_traces filename
-    np_mask_file: str
-        neuropil_masks filename
     Returns
     -------
     Dict
