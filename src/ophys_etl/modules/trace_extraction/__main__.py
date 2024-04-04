@@ -20,7 +20,8 @@ class TraceExtraction(argschema.ArgSchemaParser):
                 self.args['motion_corrected_stack'],
                 self.args['motion_border'],
                 self.args['storage_directory'],
-                self.args['rois'],
+                self.args['rois']
+        )
         self.output(output, indent=2)
         write_output_metadata(
                 {},
