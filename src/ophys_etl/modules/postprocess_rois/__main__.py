@@ -7,6 +7,7 @@ import json
 from aind_data_schema.core.processing import ProcessName
 from datetime import datetime as dt
 from datetime import timezone as tz
+import os
 
 from ophys_etl.utils.process_metadata import write_output_metadata
 from ophys_etl.utils.motion_border import (
@@ -105,6 +106,7 @@ class PostProcessROIs(ArgSchemaParser):
 
         write_output_metadata(
             {},
+            os.path.dirname(self.args['motion_corrected_video']),
             ProcessName.VIDEO_ROI_SEGMENTATION,
             self.args['motion_corrected_video'],
             self.args['output_json'],

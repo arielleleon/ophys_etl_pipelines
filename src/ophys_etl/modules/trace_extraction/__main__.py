@@ -6,6 +6,7 @@ from ophys_etl.modules.trace_extraction.schemas import (
 from aind_data_schema.core.processing import ProcessName
 from datetime import datetime as dt
 from datetime import timezone as tz
+import os
 
 from ophys_etl.utils.process_metadata import write_output_metadata
 
@@ -25,6 +26,7 @@ class TraceExtraction(argschema.ArgSchemaParser):
         self.output(output, indent=2)
         write_output_metadata(
                 {},
+                os.path.dirname(self.args['motion_corrected_video']),
                 ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
                 input_fp = output['neuropil_mask_file'],
                 output_fp = output['neuropil_mask_file'],

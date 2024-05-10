@@ -10,6 +10,7 @@ import json
 
 def write_output_metadata(
     metadata: dict,
+    process_json_dir: str,
     process_name: str,
     input_fp: Union[str, Path],
     output_fp: Union[str, Path],
@@ -26,13 +27,13 @@ def write_output_metadata(
     output_fp: str
         path to data output
     """
-    if type(output_fp) == "str":
-        output_fp = Path(output_fp)
+    with open(Path(process_json_dir) / "processing.json", "r") as f:
+        proc_data = json.load(f)
     processing = Processing(
         processing_pipeline=PipelineProcess(
             processor_full_name="Multplane Ophys Processing Pipeline",
             pipeline_url="https://codeocean.allenneuraldynamics.org/capsule/5472403/tree",
-            pipeline_version="0.1.0",
+            pipeline_version="0.3.0",
             data_processes=[
                 DataProcess(
                     name=process_name,
@@ -40,21 +41,14 @@ def write_output_metadata(
                     start_date_time=start_date_time,  # TODO: Add actual dt
                     end_date_time=dt.now(tz.utc),  # TODO: Add actual dt
                     input_location=str(input_fp),
-                    output_location=str(output_fp),
+                    output_location=output_fp,
                     code_url=(os.getenv("OPHYS_ETL_URL")),
                     parameters=metadata,
                 )
             ],
         )
     )
-    print(f"Output filepath: {output_fp}")
-    with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
-        proc_data = json.load(f)
-    processing.write_standard_file(output_directory=Path(output_fp).parent.parent)
-    with open(Path(output_fp).parent.parent / "processing.json", "r") as f:
-        dct_data = json.load(f)
-    proc_data["processing_pipeline"]["data_processes"].append(
-        dct_data["processing_pipeline"]["data_processes"][0]
+    processing.processing_pipeline.data_processes.append(
+        proc_data["processing_pipeline"]["data_processes"]
     )
-    with open(Path(output_fp).parent.parent / "processing.json", "w") as f:
-        json.dump(proc_data, f, indent=4)
+    processing.write_standard_file(output_directory=Path(output_fp).parent)

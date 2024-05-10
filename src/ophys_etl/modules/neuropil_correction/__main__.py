@@ -223,6 +223,8 @@ class NeuropilCorrectionRunner(ArgSchemaParser):
         )
         
         write_output_metadata(
+                {},
+                os.path.dirname(self.args['roi_trace_file']),
                 ProcessName.NEUROPIL_SUBTRACTION,
                 input_fp=self.args["roi_trace_file"],
                 output_fp=neuropil_correction_output,
