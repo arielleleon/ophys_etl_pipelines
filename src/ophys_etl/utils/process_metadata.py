@@ -48,7 +48,6 @@ def write_output_metadata(
             ],
         )
     )
-    processing.processing_pipeline.data_processes.append(
-        proc_data["processing_pipeline"]["data_processes"]
-    )
-    processing.write_standard_file(output_directory=Path(output_fp).parent)
+    prev_processing = Processing(**proc_data)
+    prev_processing.processing_pipeline.data_processes.append(processing.processing_pipeline.data_processes[0])
+    prev_processing.write_standard_file(output_directory=Path(output_fp).parent)
