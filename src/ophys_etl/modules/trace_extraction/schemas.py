@@ -1,7 +1,7 @@
 from argschema import ArgSchema
 from argschema.schemas import DefaultSchema
 from argschema.fields import (LogLevel, String, Nested, Float,
-                              OutputDir, InputFile, OutputFile, InputDir)
+                              OutputDir, InputFile, OutputFile)
 
 from ophys_etl.schemas.fields import H5InputFile
 from ophys_etl.schemas import ExtractROISchema
@@ -20,7 +20,7 @@ class ExclusionLabel(DefaultSchema):
 
 
 class TraceExtractionInputSchema(ArgSchema):
-    input_json = InputDir(
+    input_json = InputFile(
         required=True,
         description="path to grab processing json"
     )
