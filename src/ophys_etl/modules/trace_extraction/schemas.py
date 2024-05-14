@@ -20,7 +20,7 @@ class ExclusionLabel(DefaultSchema):
 
 
 class TraceExtractionInputSchema(ArgSchema):
-    input_json = InputFile(
+    procession_json_input = InputFile(
         required=True,
         description="path to grab processing json"
     )
