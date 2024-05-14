@@ -26,7 +26,7 @@ class TraceExtraction(argschema.ArgSchemaParser):
         self.output(output, indent=2)
         write_output_metadata(
                 {},
-                os.path.dirname(self.args['motion_corrected_video']),
+                self.args["input_json"],
                 ProcessName.VIDEO_ROI_TIMESERIES_EXTRACTION,
                 input_fp = output['neuropil_mask_file'],
                 output_fp = output['neuropil_mask_file'],
